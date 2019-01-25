@@ -4,11 +4,13 @@
 
 2.侵入性低，无需在每个页面或者基类调用设置代码。
 
-3.
-
 ## 注意
 
 由于使用了FragmentLifecycleCallbacks来监听Fragment生命周期，所以要求v4包版本在25.1.0以上
+
+## 展示
+
+![截图](./CurAcFrScreenShorts.png)
 
 ## 使用 
 
