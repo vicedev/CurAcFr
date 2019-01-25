@@ -13,6 +13,8 @@ public interface FloatView {
 
     void setView(View view);
 
+    View getView();
+
     void setGravity(int gravity, int xOffset, int yOffset);
 
     void init();

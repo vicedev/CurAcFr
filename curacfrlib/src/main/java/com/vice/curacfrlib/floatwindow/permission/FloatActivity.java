@@ -37,14 +37,14 @@ public class FloatActivity extends AppCompatActivity {
     private void requestAlertWindowPermission() {
         Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
         intent.setData(Uri.parse("package:" + getPackageName()));
-        startActivityForResult(intent, 756232212);
+        startActivityForResult(intent, 666);
     }
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 756232212) {
+        if (requestCode == 666) {
             if (PermissionUtil.hasPermissionOnActivityResult(this)) {
                 mPermissionListener.onSuccess();
             } else {

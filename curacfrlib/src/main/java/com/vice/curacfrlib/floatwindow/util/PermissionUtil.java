@@ -1,6 +1,6 @@
 package com.vice.curacfrlib.floatwindow.util;
 
-import android.app.AppOpsManager;
+//import android.app.AppOpsManager;
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.os.Binder;
@@ -44,15 +44,15 @@ public class PermissionUtil {
      * 其实此方式也可以用于判断6.0以上版本，只不过有更简单的canDrawOverlays代替
      */
     static boolean hasPermissionBelowMarshmallow(Context context) {
-        try {
-            AppOpsManager manager = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
-            Method dispatchMethod = AppOpsManager.class.getMethod("checkOp", int.class, int.class, String.class);
-            //AppOpsManager.OP_SYSTEM_ALERT_WINDOW = 24
-            return AppOpsManager.MODE_ALLOWED == (Integer) dispatchMethod.invoke(
-                    manager, 24, Binder.getCallingUid(), context.getApplicationContext().getPackageName());
-        } catch (Exception e) {
+//        try {
+//            AppOpsManager manager = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
+//            Method dispatchMethod = AppOpsManager.class.getMethod("checkOp", int.class, int.class, String.class);
+//            //AppOpsManager.OP_SYSTEM_ALERT_WINDOW = 24
+//            return AppOpsManager.MODE_ALLOWED == (Integer) dispatchMethod.invoke(
+//                    manager, 24, Binder.getCallingUid(), context.getApplicationContext().getPackageName());
+//        } catch (Exception e) {
             return false;
-        }
+//        }
     }
 
 

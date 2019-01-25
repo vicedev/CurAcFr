@@ -1,19 +1,12 @@
 package com.vice.curacfrlib.floatwindow.view;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ObjectAnimator;
-import android.animation.PropertyValuesHolder;
-import android.animation.TimeInterpolator;
-import android.animation.ValueAnimator;
+import android.animation.*;
 import android.annotation.SuppressLint;
-import android.content.res.Configuration;
 import android.os.Build;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.animation.DecelerateInterpolator;
-
 import com.vice.curacfrlib.floatwindow.base.FloatLifecycle;
 import com.vice.curacfrlib.floatwindow.constant.MoveType;
 import com.vice.curacfrlib.floatwindow.constant.Screen;
@@ -38,6 +31,7 @@ public class IFloatWindowImpl implements IFloatWindow, LifecycleListener {
     private int mSlop;
     private int screenWidth;
     private int screenHeight;
+    private int statusBarHeight;
     private boolean isShow;
     private boolean mClick;
     private boolean isHideByUser;
@@ -50,6 +44,7 @@ public class IFloatWindowImpl implements IFloatWindow, LifecycleListener {
         int baseHeight = DensityUtil.getScreenHeight(mBuildFloatWindow.mApplicationContext);
         screenWidth = baseWidth > baseHeight ? baseHeight : baseWidth;
         screenHeight = baseWidth > baseHeight ? baseWidth : baseHeight;
+        statusBarHeight = DensityUtil.getStateBarHeight(mBuildFloatWindow.mApplicationContext);
         isLandscape = baseWidth > baseHeight;
 
         mSlop = ViewConfiguration.get(mBuildFloatWindow.mApplicationContext).getScaledTouchSlop();
@@ -185,7 +180,7 @@ public class IFloatWindowImpl implements IFloatWindow, LifecycleListener {
     @Override
     public void onPortrait() {
         double ratio = (double) getY() / screenWidth;
-        int x = getX() + mBuildFloatWindow.getWidth() / 2 < screenHeight / 2 ? + FloatWindow.mSlideLeftMargin : screenWidth + FloatWindow.mSlideRightMargin;
+        int x = getX() + mBuildFloatWindow.getWidth() / 2 < screenHeight / 2 ? +FloatWindow.mSlideLeftMargin : screenWidth + FloatWindow.mSlideRightMargin;
         mFloatView.updateXY(x, (int) (ratio * screenHeight));
         isLandscape = false;
     }
@@ -193,7 +188,7 @@ public class IFloatWindowImpl implements IFloatWindow, LifecycleListener {
     @Override
     public void onLandscape() {
         double ratio = (double) getY() / screenHeight;
-        int x = getX() + mBuildFloatWindow.getWidth() / 2 < screenWidth / 2 ? + FloatWindow.mSlideLeftMargin : screenHeight + FloatWindow.mSlideRightMargin;
+        int x = getX() + mBuildFloatWindow.getWidth() / 2 < screenWidth / 2 ? +FloatWindow.mSlideLeftMargin : screenHeight + FloatWindow.mSlideRightMargin;
         mFloatView.updateXY(x, (int) (ratio * screenWidth));
         isLandscape = true;
     }
@@ -230,6 +225,20 @@ public class IFloatWindowImpl implements IFloatWindow, LifecycleListener {
                                 changeY = event.getRawY() - lastY;
                                 newX = (int) (getX() + changeX);
                                 newY = (int) (getY() + changeY);
+                                if (mFloatView.getX() + changeX < 0) {
+                                    newX = 0;
+                                }
+                                int width = mFloatView.getView().getWidth();
+                                if (mFloatView.getX() + width + changeX > screenWidth) {
+                                    newX = screenWidth - width;
+                                }
+                                if (mFloatView.getY() + changeY < 0) {
+                                    newY = 0;
+                                }
+                                int height = mFloatView.getView().getHeight();
+                                if (mFloatView.getY() + height + statusBarHeight + changeY > screenHeight) {
+                                    newY = screenHeight - height - statusBarHeight;
+                                }
                                 mFloatView.updateXY(newX, newY);
                                 if (mBuildFloatWindow.mViewStateListener != null) {
                                     mBuildFloatWindow.mViewStateListener.onPositionUpdate(newX, newY);
@@ -241,7 +250,7 @@ public class IFloatWindowImpl implements IFloatWindow, LifecycleListener {
                                 upX = event.getRawX();
                                 upY = event.getRawY();
                                 mClick = (Math.abs(upX - downX) > mSlop) || (Math.abs(upY - downY) > mSlop);
-                                onActionUp();
+//                                onActionUp();
                                 return mClick;
                             default:
                                 break;
@@ -258,7 +267,7 @@ public class IFloatWindowImpl implements IFloatWindow, LifecycleListener {
                 int[] a = new int[2];
                 mBuildFloatWindow.mView.getLocationOnScreen(a);
                 int startX = a[0];
-                int endX;
+                int endX = 0;
                 if (isLandscape) {
                     endX = a[0] + mBuildFloatWindow.getWidth() / 2 < screenHeight / 2 ? FloatWindow.mSlideLeftMargin : screenHeight + FloatWindow.mSlideRightMargin;
                 } else {

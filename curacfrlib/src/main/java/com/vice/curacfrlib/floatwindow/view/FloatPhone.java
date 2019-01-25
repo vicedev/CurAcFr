@@ -6,6 +6,7 @@ import android.os.Build;
 import android.view.View;
 import android.view.WindowManager;
 
+import android.widget.Toast;
 import com.vice.curacfrlib.floatwindow.permission.FloatActivity;
 import com.vice.curacfrlib.floatwindow.interfaces.FloatView;
 import com.vice.curacfrlib.floatwindow.interfaces.PermissionListener;
@@ -53,6 +54,11 @@ class FloatPhone implements FloatView {
     }
 
     @Override
+    public View getView() {
+        return mView;
+    }
+
+    @Override
     public void setGravity(int gravity, int xOffset, int yOffset) {
         mLayoutParams.gravity = gravity;
         mLayoutParams.x = mX = xOffset;
@@ -62,40 +68,47 @@ class FloatPhone implements FloatView {
 
     @Override
     public void init() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
-            req();
-        } else if (Miui.rom()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                req();
-            } else {
-                mLayoutParams.type = WindowManager.LayoutParams.TYPE_PHONE;
-                Miui.req(mContext, new PermissionListener() {
-                    @Override
-                    public void onSuccess() {
-                        mWindowManager.addView(mView, mLayoutParams);
-                        if (mPermissionListener != null) {
-                            mPermissionListener.onSuccess();
-                        }
-                    }
-
-                    @Override
-                    public void onFail() {
-                        if (mPermissionListener != null) {
-                            mPermissionListener.onFail();
-                        }
-                    }
-                });
-            }
-        } else {
-            try {
-                mLayoutParams.type = WindowManager.LayoutParams.TYPE_TOAST;
-                mWindowManager.addView(mView, mLayoutParams);
-            } catch (Exception e) {
-                mWindowManager.removeView(mView);
-                LogUtil.e("TYPE_TOAST 失败");
-                req();
-            }
+        try {
+            mLayoutParams.type = WindowManager.LayoutParams.TYPE_PHONE;
+            mWindowManager.addView(mView, mLayoutParams);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        Toast.makeText(mContext, "若未开启悬浮窗，请到设置中手动打开悬浮窗权限~", Toast.LENGTH_LONG).show();
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+//            req();
+//        } else if (Miui.rom()) {
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                req();
+//            } else {
+//                mLayoutParams.type = WindowManager.LayoutParams.TYPE_PHONE;
+//                Miui.req(mContext, new PermissionListener() {
+//                    @Override
+//                    public void onSuccess() {
+//                        mWindowManager.addView(mView, mLayoutParams);
+//                        if (mPermissionListener != null) {
+//                            mPermissionListener.onSuccess();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFail() {
+//                        if (mPermissionListener != null) {
+//                            mPermissionListener.onFail();
+//                        }
+//                    }
+//                });
+//            }
+//        } else {
+//            try {
+//                mLayoutParams.type = WindowManager.LayoutParams.TYPE_TOAST;
+//                mWindowManager.addView(mView, mLayoutParams);
+//            } catch (Exception e) {
+//                mWindowManager.removeView(mView);
+//                LogUtil.e("TYPE_TOAST 失败");
+//                req();
+//            }
+//        }
     }
 
     private void req() {
@@ -125,7 +138,11 @@ class FloatPhone implements FloatView {
     @Override
     public void dismiss() {
         isRemove = true;
-        mWindowManager.removeView(mView);
+        try {
+            mWindowManager.removeView(mView);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

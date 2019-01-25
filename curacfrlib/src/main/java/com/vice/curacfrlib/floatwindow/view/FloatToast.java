@@ -48,6 +48,11 @@ class FloatToast implements FloatView {
     }
 
     @Override
+    public View getView() {
+        return toast.getView();
+    }
+
+    @Override
     public void setGravity(int gravity, int xOffset, int yOffset) {
         toast.setGravity(gravity, xOffset, yOffset);
     }
