@@ -1,13 +1,9 @@
 package com.vice.curacfrlib;
 
 import android.content.Context;
-import android.nfc.Tag;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.vice.curacfrlib.floatwindow.constant.Screen;
-import com.vice.curacfrlib.floatwindow.interfaces.PermissionListener;
 import com.vice.curacfrlib.floatwindow.interfaces.ViewStateListener;
 import com.vice.curacfrlib.floatwindow.view.FloatWindow;
 
@@ -44,7 +40,7 @@ public class FloatViewManager {
             mTvCurrentActivity = mFloatView.findViewById(R.id.tv_current_activity);
             mTvCurrentFragment = mFloatView.findViewById(R.id.tv_current_fragment);
 
-            mFloatView.findViewById(R.id.iv_close).setOnClickListener(new View.OnClickListener() {
+            mFloatView.findViewById(R.id.tv_close).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (onCloseClickListener != null) {

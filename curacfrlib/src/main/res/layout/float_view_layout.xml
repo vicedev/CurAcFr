@@ -17,10 +17,12 @@
                   android:textColor="@android:color/holo_red_light"/>
     </LinearLayout>
 
-    <ImageView
-            android:id="@+id/iv_close"
-            android:layout_width="20dp" android:layout_height="20dp"
-            android:src="@drawable/close"
+    <TextView
+            android:id="@+id/tv_close"
+            android:layout_width="25dp" android:layout_height="25dp"
+            android:text="×"
+            android:gravity="center"
+            android:textSize="15dp"
             android:layout_alignParentRight="true"/>
 
 </RelativeLayout>
