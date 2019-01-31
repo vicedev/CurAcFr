@@ -1,4 +1,15 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
+
+
+publish {
+    userOrg = 'vicedev' //注册时候的用户名。
+    groupId = 'com.vicedev'//compile引用时的第1部分
+    artifactId = 'curacfr'//发布到JCenter上的项目名字，compile引用时的第2部分项目名
+    publishVersion = '1.0.0'//版本号 ，compile引用时的最后部分，下次更新是只需要更改版本号即可
+    desc = '查看当前页面（Activity/Fragment）'//描述
+    website = 'https://github.com/vicedev/CurAcFr'  //项目的GitHub网站
+}
 
 android {
     compileSdkVersion 27
@@ -49,3 +60,18 @@ task makeJar(type: Copy) {
 }
 
 makeJar.dependsOn(build)
+
+allprojects {
+    tasks.withType(Javadoc) {
+        options {
+            encoding "UTF-8"
+            charSet 'UTF-8'
+            links "http://docs.oracle.com/javase/7/docs/api"
+        }
+    }
+}
+
+//生成文档
+task javadoc(type: Javadoc) {
+    failOnError false
+}
