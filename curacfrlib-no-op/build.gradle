@@ -1,19 +1,19 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.novoda.bintray-release'
 
-
 publish {
     userOrg = 'vicedev' //注册时候的用户名。
     groupId = 'com.vicedev'//compile引用时的第1部分
-    artifactId = 'curacfr'//发布到JCenter上的项目名字
+    artifactId = 'curacfr-no-op'//发布到JCenter上的项目名字
     publishVersion = '1.0.0'//版本号 ，compile引用时的最后部分，下次更新是只需要更改版本号即可
-    desc = '查看当前页面（Activity/Fragment）'//描述
+    desc = '查看当前页面（Activity/Fragment）的空实现'//描述
     website = 'https://github.com/vicedev/CurAcFr'  //项目的GitHub网站
 }
 
 android {
     compileSdkVersion 27
-//    publishNonDefault true
+
+
 
     defaultConfig {
         minSdkVersion 16
@@ -42,24 +42,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
-
-task makeJar(type: Copy) {
-    // 删除存在的
-    delete 'build/libs/curacfr.jar'
-    // 设置拷贝的文件，老版目录
-//    from('build/intermediates/bundles/release/')
-    // 设置拷贝的文件，老版目录
-    from('build/intermediates/packaged-classes/release/')
-    // 打进jar包后的文件目录
-    into('build/libs/')
-    // 将classes.jar放入build/libs/目录下
-    // include ,exclude参数来设置过滤
-    include('classes.jar')
-    // 重命名
-    rename('classes.jar', 'curacfr.jar')
-}
-
-makeJar.dependsOn(build)
 
 allprojects {
     tasks.withType(Javadoc) {

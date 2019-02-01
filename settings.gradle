@@ -1,1 +1,1 @@
-include ':app', ':curacfrlib'
+include ':app', ':curacfrlib', ':curacfrlib-no-op'

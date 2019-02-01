@@ -14,6 +14,16 @@
 
 ## 使用 
 
+#### 引用
+
+```gradle
+dependencies {
+	...
+    debugImplementation 'com.vicedev:curacfr:1.0.0'
+    releaseImplementation 'com.vicedev:curacfr-no-op:1.0.0'
+}
+```
+
 ##### 初始化：
 
 ~~~kotlin
@@ -28,9 +38,9 @@ class App : Application() {
 ##### 打开悬浮窗
 
 ~~~kotlin
-//使用默认的悬浮窗界面
+//方式一：使用默认的悬浮窗界面
 CurAcFr.show()
-//参数1：当前页面的返回监听，参数2：是否使用默认的悬浮窗
+//方式二：参数1：当前页面的返回监听，参数2：是否使用默认的悬浮窗
 CurAcFr.show(object : CurAcFr.OnChangeListener {
     override fun onCurrentActivityChange(currentActivityName: String?) {  
      }
